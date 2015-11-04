@@ -41,7 +41,6 @@ class Car:
         else:
             return False
 
-
     def next_cars(self):
         new_cars = []
 
@@ -89,10 +88,22 @@ class Position:
         return "Position(" + str(self.x) + ", " + str(self.y) + ")"
 
 
+class Board:
+    ''' todo '''
+
+    def __init__(self, boardWidth, boardHeight, cars, goal):
+        Car.boardHeight = boardHeight
+        Car.boardWidth = boardWidth
+        self.cars = cars
+        self.goal = goal
+
+    def is_Winner(self):
+        return self.cars[0].end == self.goal
+
+##board tests
 
 
-
-#tests
+# tests
 car1 = Car(Position(0, 0), True, 2)
 car2 = Car(Position(0, 0), False, 2)
 car3 = Car(Position(0, 0), True, 3)
@@ -138,7 +149,7 @@ new_cars = car1.next_cars()
 
 print "new cars are computed " + str(len(new_cars) == 4)
 
-car5 = Car(Position(4,4), True, 2)
+car5 = Car(Position(4, 4), True, 2)
 
 new_cars_backwards = car5.next_cars()
 
@@ -153,3 +164,8 @@ car6 = Car(Position(2, 0), True, 2)
 test11 = car1.no_clash(car6) == True
 
 print "car cannot clash " + str(test11)
+
+board = Board(6, 6, [Car(Position(0, 0), True, 2),], Position(5, 2))
+test12 = board.is_Winner() == False
+
+print "board can be no winner " + str(test12)

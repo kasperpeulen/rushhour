@@ -33,6 +33,15 @@ class Car:
         else:
             return Car(self.start + Position(0, steps), self.horizontal, self.length)
 
+    def no_clash(self, othercar):
+        set1 = set(self.positions)
+        set2 = set(othercar.positions)
+        if set1.intersection(set2) == set([]):
+            return True
+        else:
+            return False
+
+
     def next_cars(self):
         new_cars = []
 
@@ -73,10 +82,17 @@ class Position:
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
 
+    def __hash__(self):
+        return hash((self.x, self.y))
+
     def __str__(self):
         return "Position(" + str(self.x) + ", " + str(self.y) + ")"
 
 
+
+
+
+#tests
 car1 = Car(Position(0, 0), True, 2)
 car2 = Car(Position(0, 0), False, 2)
 car3 = Car(Position(0, 0), True, 3)
@@ -127,3 +143,13 @@ car5 = Car(Position(4,4), True, 2)
 new_cars_backwards = car5.next_cars()
 
 print "new cars can be placed backwards " + str(len(new_cars_backwards) == 4)
+
+test10 = car1.no_clash(car2) == False
+
+print "car can clash " + str(test10)
+
+car6 = Car(Position(2, 0), True, 2)
+
+test11 = car1.no_clash(car6) == True
+
+print "car cannot clash " + str(test11)

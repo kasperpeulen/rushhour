@@ -32,4 +32,5 @@ class Board:
                         board = board + str(i).zfill(2)
                     else:
                         board = board + 'XX'
+            board = board + '\n'
         return board

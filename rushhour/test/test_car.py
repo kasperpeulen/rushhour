@@ -1,7 +1,7 @@
 from rushhour.car import Car
 from rushhour.position import Position
 
-car1 = Car(Position(0, 0), True, 2)
+car1 = Car(length=2, start=Position(0, 0), horizontal=True)
 car2 = Car(Position(0, 0), False, 2)
 car3 = Car(Position(0, 0), True, 3)
 car4 = Car(Position(0, 0), False, 3)

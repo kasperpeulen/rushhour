@@ -11,11 +11,9 @@ class Position:
     def __eq__(self, other: 'Position') -> bool:
         return self.x == other.x and self.y == other.y
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash((self.x, self.y))
 
     def __str__(self) -> str:
         return "Position(" + str(self.x) + ", " + str(self.y) + ")"
 
-
-pos = Position(1, 2) + Position(1, 3)

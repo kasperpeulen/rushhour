@@ -1,4 +1,5 @@
 from rushhour.position import Position
+from typing import List
 
 
 class Car:
@@ -24,19 +25,19 @@ class Car:
             else:
                 self.positions = [self.start, self.start + Position(0, 1), self.end]
 
-    def is_valid(self):
+    def is_valid(self) -> bool:
         return self.start.x >= 0 \
                and self.start.y >= 0 \
                and self.end.x < self.boardWidth \
                and self.end.y < self.boardHeight
 
-    def move(self, steps: int):
+    def move(self, steps: int) -> Car:
         if self.horizontal:
             return Car(self.start + Position(steps, 0), self.horizontal, self.length)
         else:
             return Car(self.start + Position(0, steps), self.horizontal, self.length)
 
-    def no_clash(self, other_car: 'Car'):
+    def no_clash(self, other_car: 'Car') -> bool:
         set1 = set(self.positions)
         set2 = set(other_car.positions)
         if set1.intersection(set2) == set([]):
@@ -44,7 +45,7 @@ class Car:
         else:
             return False
 
-    def next_cars(self):
+    def next_cars(self) -> List[Car]:
         new_cars = []
 
         new_car = self.move(1)
@@ -59,7 +60,7 @@ class Car:
 
         return new_cars
 
-    def __str__(self):
+    def __str__(self) -> str:
         s = "\n"
         for y in range(0, self.boardHeight):
             for x in range(0, self.boardWidth):

@@ -1,6 +1,8 @@
 import os
 import random
 
+import time
+
 from rushhour.car import Car
 from rushhour.hash_table import states_checked_hash_table
 from rushhour.position import Position
@@ -12,7 +14,7 @@ class Board:
     """ todo """
 
     def __init__(self, board_width: int, board_height: int, cars: List[Car],
-                 goal: Position, previous=None):
+                 goal: (int, Position), previous=None):
         Car.boardHeight = board_height
         Car.boardWidth = board_width
         self.previous = previous
@@ -20,7 +22,8 @@ class Board:
         self.goal = goal
 
     def is_winner(self) -> bool:
-        return self.cars[0].end == self.goal
+        (index, position) = self.goal
+        return self.cars[index].end == position
 
     def possible_next_boards(self):
         new_boards = []
@@ -32,7 +35,9 @@ class Board:
                               self.goal, previous=self)
 
                 if board.is_winner():
+                    raise Win
                     print("yeaaaaah")
+                    print(time.time())
                     state = board
                     winning_path = []
                     while state != None:
@@ -83,7 +88,7 @@ class Board:
         return hash(tuple(self.cars))
 
     def __eq__(self, other: 'Board') -> bool:
-        return str(other) == str(self)
+        return self.cars == other.cars
 
 
 def color(text, i):
@@ -105,6 +110,10 @@ def color(text, i):
     if os.getenv('ANSI_COLORS_DISABLED') is None:
         fmt_str = '\033[%dm%s'
         text = fmt_str % (i % 7 + 30, text)
-        COLORS
         text += RESET
     return text
+
+class Win(Exception):
+    """
+
+    """

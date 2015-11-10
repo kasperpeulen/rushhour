@@ -12,5 +12,5 @@ class Board:
         self.cars = cars
         self.goal = goal
 
-    def is_winner(self):
+    def is_winner(self) -> bool:
         return self.cars[0].end == self.goal

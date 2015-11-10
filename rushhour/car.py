@@ -21,9 +21,11 @@ class Car:
             self.positions = [self.start, self.end]
         else:
             if horizontal:
-                self.positions = [self.start, self.start + Position(1, 0), self.end]
+                self.positions = [self.start, self.start + Position(1, 0),
+                                  self.end]
             else:
-                self.positions = [self.start, self.start + Position(0, 1), self.end]
+                self.positions = [self.start, self.start + Position(0, 1),
+                                  self.end]
 
     def is_valid(self) -> bool:
         return self.start.x >= 0 \
@@ -31,11 +33,19 @@ class Car:
                and self.end.x < self.boardWidth \
                and self.end.y < self.boardHeight
 
-    def move(self, steps: int) -> Car:
+    def move(self, steps: int) -> 'Car':
         if self.horizontal:
-            return Car(self.start + Position(steps, 0), self.horizontal, self.length)
+            return Car(self.start + Position(steps, 0), self.horizontal,
+                       self.length)
         else:
-            return Car(self.start + Position(0, steps), self.horizontal, self.length)
+            return Car(self.start + Position(0, steps), self.horizontal,
+                       self.length)
+
+    def no_clash_all_cars(self, other_cars: List['Car']):
+        for other_car in other_cars:
+            if not self.no_clash(other_car):
+                return False
+        return True
 
     def no_clash(self, other_car: 'Car') -> bool:
         set1 = set(self.positions)
@@ -45,17 +55,29 @@ class Car:
         else:
             return False
 
-    def next_cars(self) -> List[Car]:
+    def next_cars(self, other_cars: List['Car']) -> List['Car']:
+        """
+        Calculates all possible next cars bounded by the [boardWidth] and
+        [boardHeight]. Doesn't remove cars that overlap.
+        """
+        # make sure self is removed if it is in the list of other cars
+        if self in other_cars:
+            other_cars.remove(self)
         new_cars = []
-
         new_car = self.move(1)
         while new_car.is_valid():
-            new_cars.append(new_car)
+            if new_car.no_clash_all_cars(other_cars):
+                new_cars.append(new_car)
+            else:
+                break
             new_car = new_car.move(1)
 
         new_car = self.move(-1)
         while new_car.is_valid():
-            new_cars.append(new_car)
+            if new_car.no_clash_all_cars(other_cars):
+                new_cars.append(new_car)
+            else:
+                break
             new_car = new_car.move(-1)
 
         return new_cars
@@ -71,3 +93,5 @@ class Car:
             s += "\n"
         return s
 
+    def __eq__(self, other: 'Car') -> bool:
+        return self.positions == other.positions

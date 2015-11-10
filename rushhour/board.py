@@ -14,3 +14,9 @@ class Board:
 
     def is_winner(self) -> bool:
         return self.cars[0].end == self.goal
+
+    # def possible_next_boards(self):
+    #     new_boards = []
+    #     for car in self.cars:
+    #         for new_car in car.next_cars():
+    #

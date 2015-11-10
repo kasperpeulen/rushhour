@@ -39,15 +39,7 @@ test9 = car_moved_invalid.is_valid() == False
 
 print("car moved can be invalid " + str(test9))
 
-new_cars = car1.next_cars()
-
-print("new cars are computed " + str(len(new_cars) == 4))
-
 car5 = Car(Position(4, 4), True, 2)
-
-new_cars_backwards = car5.next_cars()
-
-print("new cars can be placed backwards " + str(len(new_cars_backwards) == 4))
 
 test10 = car1.no_clash(car2) == False
 
@@ -58,3 +50,21 @@ car6 = Car(Position(2, 0), True, 2)
 test11 = car1.no_clash(car6) == True
 
 print("car cannot clash " + str(test11))
+
+car10 = Car(Position(0, 0), True, 2)
+car11 = Car(Position(2, 0), True, 2)
+car12 = Car(Position(4, 0), True, 2)
+car13 = Car(Position(0, 1), True, 2)
+
+test12 = car13.next_cars([car13, car10, car11, car12])
+
+print("car can move freely", str(len(test12) == 4))
+
+car14 = Car(Position(2, 1), True, 2)
+
+test13 = car13.next_cars([car13, car10, car11, car12, car14])
+
+print("car can not hop", str(len(test13) == 0))
+
+print("car can be equal " + str(
+    Car(Position(0, 0), True, 2) == Car(Position(0, 0), True, 2)))

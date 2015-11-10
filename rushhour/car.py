@@ -93,5 +93,8 @@ class Car:
             s += "\n"
         return s
 
+    def __hash__(self) -> int:
+        return hash((self.start, self.horizontal, self.length))
+
     def __eq__(self, other: 'Car') -> bool:
         return self.positions == other.positions

@@ -41,13 +41,13 @@ print("car moved can be invalid " + str(test9))
 
 car5 = Car(Position(4, 4), True, 2)
 
-test10 = car1.no_clash(car2) == False
+test10 = car1.clashes_with(car2) == False
 
 print("car can clash " + str(test10))
 
 car6 = Car(Position(2, 0), True, 2)
 
-test11 = car1.no_clash(car6) == True
+test11 = car1.clashes_with(car6) == True
 
 print("car cannot clash " + str(test11))
 

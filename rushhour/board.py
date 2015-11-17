@@ -15,11 +15,15 @@ class Board:
 
     def __init__(self, board_width: int, board_height: int, cars: List[Car],
                  goal: (int, Position), previous=None):
-        Car.boardHeight = board_height
-        Car.boardWidth = board_width
+        self.board_height = board_height
+        self.board_width = board_width
         self.previous = previous
         self.cars = cars
         self.goal = goal
+
+    @staticmethod
+    def cached(self, new_cars):
+        return Board(self.board_height, self.board_width, new_cars, self.goal, previous=self)
 
     def is_winner(self) -> bool:
         (index, position) = self.goal
@@ -31,33 +35,28 @@ class Board:
             for new_car in self.cars[i].next_cars(other_cars=list(self.cars)):
                 new_cars = list(self.cars)
                 new_cars[i] = new_car
-                board = Board(Car.boardHeight, Car.boardWidth, new_cars,
-                              self.goal, previous=self)
+                board = Board.cached(self, new_cars)
 
                 if board.is_winner():
-                    raise Win
                     print("yeaaaaah")
-                    print(time.time())
                     state = board
                     winning_path = []
-                    while state != None:
+                    while state is not None:
                         winning_path.append(state)
                         state = state.previous
                     winning_path.reverse()
                     for board in winning_path:
                         print(board)
-                    exit(0)
+                    raise Win
 
                 hash0 = hash(board)
                 if hash0 not in states_checked_hash_table:
                     states_checked_hash_table[hash0] = [board]
                     new_boards.append(board)
-
-                if hash0 in states_checked_hash_table and board not in \
+                elif hash0 in states_checked_hash_table and board not in \
                         states_checked_hash_table[hash0]:
                     new_boards.append(board)
                     states_checked_hash_table[hash0].append(board)
-
         return new_boards
 
     def car_that_contains_position(self, position: Position):
@@ -70,9 +69,9 @@ class Board:
         board = '\n'
         for y in range(0, Car.boardHeight):
             for x in range(0, Car.boardWidth):
-                if self.car_that_contains_position(Position(x, y)) is not None:
+                if self.car_that_contains_position(Position.new(x, y)) is not None:
                     i = self.cars.index(
-                        self.car_that_contains_position(Position(x, y)))
+                        self.car_that_contains_position(Position.new(x, y)))
                     if i == 0:
 
                         board += colored(str(i).zfill(2), 'red') + ' '

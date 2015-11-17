@@ -27,14 +27,5 @@ def breath_search(initial: Board):
         print("step ", count)
         path.append(nextPath)
 
-
-    # for board in path2:
-    #     print(board)
-    # print(len(path2))
-    # for board in path[-1]:
-    #     print(board)
-    # print(states_checked_hash_table)
-    #
-
 start = time.time()
 breath_search(game4)

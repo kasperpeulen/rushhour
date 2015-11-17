@@ -22,7 +22,7 @@ def breath_search(initial: Board):
                 nextPath.extend(board.possible_next_boards())
             except Win:
                 end = time.time()
-                print("0", end - start)
+                print(end - start)
                 exit(0)
         print(len(nextPath))
         print(time.time() - start)

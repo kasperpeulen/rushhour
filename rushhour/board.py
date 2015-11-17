@@ -35,12 +35,10 @@ class Board:
                               self.goal, previous=self)
 
                 if board.is_winner():
-
                     print("yeaaaaah")
-                    print(time.time())
                     state = board
                     winning_path = []
-                    while state != None:
+                    while state is not None:
                         winning_path.append(state)
                         state = state.previous
                     winning_path.reverse()

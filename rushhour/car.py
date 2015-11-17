@@ -7,6 +7,22 @@ class Car:
     boardWidth = 6
     boardHeight = 6
 
+    @staticmethod
+    def new(start: Position, horizontal: bool, length: int):
+        hash = start.x + start.y * 100
+
+        car = Car(start, horizontal, length)
+
+        if hash in cache:
+            if car in cache[hash]:
+                return car
+            else:
+                cache[hash].append(car)
+                return car
+        else:
+            cache[hash] = [car]
+            return car
+
     def __init__(self, start: Position, horizontal: bool, length: int):
         self.start = start
         self.horizontal = horizontal
@@ -35,10 +51,10 @@ class Car:
 
     def move(self, steps: int) -> 'Car':
         if self.horizontal:
-            return Car(self.start + Position.new(steps, 0), self.horizontal,
+            return Car.new(self.start + Position.new(steps, 0), self.horizontal,
                        self.length)
         else:
-            return Car(self.start + Position.new(0, steps), self.horizontal,
+            return Car.new(self.start + Position.new(0, steps), self.horizontal,
                        self.length)
 
     def no_clash_all_cars(self, other_cars: List['Car']):
@@ -98,3 +114,5 @@ class Car:
 
     def __eq__(self, other: 'Car') -> bool:
         return self.positions == other.positions
+
+cache = {}

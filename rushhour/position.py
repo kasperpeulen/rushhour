@@ -7,7 +7,7 @@ class Position:
 
     @staticmethod
     def new(x: int, y: int):
-        hash = x + y * 100
+        hash = (x + 2) + 15 * (y + 1)
         if hash in cache:
             return cache[hash]
         else:
@@ -23,6 +23,8 @@ class Position:
 
     def __hash__(self) -> int:
         return hash((self.x, self.y))
+
+
 
     def __str__(self) -> str:
         return "Position(" + str(self.x) + ", " + str(self.y) + ")"

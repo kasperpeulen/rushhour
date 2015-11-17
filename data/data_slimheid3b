@@ -1,0 +1,110 @@
+step 0
+new states: 1
+total states: 1
+
+01 02 02 02 XX 03 XX XX XX 
+01 XX XX 04 XX 03 05 05 05 
+XX XX XX 04 XX 03 XX XX 06 
+07 07 XX 04 XX 08 08 08 06 
+09 00 00 10 XX XX XX XX 06 
+09 XX 11 10 XX 12 12 12 13 
+14 14 11 15 16 16 XX XX 13 
+17 XX 11 15 18 XX XX XX 13 
+17 19 19 19 18 20 20 21 21 
+
+step  1
+new states: 7
+total states: 8
+0.0056858062744140625
+step  2
+new states: 39
+total states: 47
+0.025894880294799805
+step  3
+new states: 147
+total states: 194
+0.14474892616271973
+step  4
+new states: 409
+total states: 603
+0.6155118942260742
+step  5
+new states: 867
+total states: 1470
+1.918895959854126
+step  6
+new states: 1462
+total states: 2932
+4.630273818969727
+step  7
+new states: 2073
+total states: 5005
+9.103482007980347
+step  8
+new states: 2561
+total states: 7566
+15.523133993148804
+step  9
+new states: 2676
+total states: 10242
+23.497376918792725
+step  10
+new states: 2408
+total states: 12650
+31.528321981430054
+step  11
+new states: 1954
+total states: 14604
+38.713541984558105
+step  12
+new states: 1313
+total states: 15917
+44.56509184837341
+step  13
+new states: 797
+total states: 16714
+48.419782876968384
+step  14
+new states: 746
+total states: 17460
+50.78134894371033
+step  15
+new states: 1382
+total states: 18842
+53.20239591598511
+step  16
+new states: 2802
+total states: 21644
+57.9639778137207
+step  17
+new states: 4542
+total states: 26186
+67.65014386177063
+step  18
+new states: 7035
+total states: 33221
+82.34742593765259
+step  19
+new states: 9241
+total states: 42462
+107.2109169960022
+step  20
+new states: 11033
+total states: 53495
+137.96764397621155
+step  21
+new states: 13447
+total states: 66942
+174.61503195762634
+step  22
+new states: 16611
+total states: 83553
+220.33714294433594
+step  23
+new states: 21139
+total states: 104692
+276.44432282447815
+step  24
+new states: 27971
+total states: 132663
+346.1769437789917

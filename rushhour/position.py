@@ -7,7 +7,6 @@ class Position:
 
     @staticmethod
     def new(x: int, y: int):
-        return Position(x,y)lim
         hash = x + y * 100
         if hash in cache:
             return cache[hash]

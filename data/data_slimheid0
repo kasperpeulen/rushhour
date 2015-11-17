@@ -1,0 +1,45 @@
+Slimheid 0:
+
+step 0
+new states: 1
+total states: 1
+
+XX XX 01 01 02 02 
+XX 03 03 04 04 05 
+XX XX 00 00 06 05 
+07 07 08 08 06 05 
+09 XX XX 10 11 11 
+09 XX XX 10 12 12 
+
+step  1
+new states: 5
+total states: 6
+0.0021049976348876953
+step  2
+new states: 29
+total states: 35
+0.0077419281005859375
+step  3
+new states: 179
+total states: 214
+0.03663897514343262
+step  4
+new states: 1145
+total states: 1359
+0.2099001407623291
+step  5
+new states: 7490
+total states: 8849
+1.2948269844055176
+step  6
+new states: 49753
+total states: 58602
+8.198338985443115
+step  7
+new states: 334278
+total states: 392880
+53.55746603012085
+step  8
+new states: 2266650
+total states: 2659530
+378.3036279678345

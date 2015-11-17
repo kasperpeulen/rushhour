@@ -4,7 +4,7 @@ import random
 import time
 
 from rushhour.car import Car
-# from rushhour.hash_table import states_checked_hash_table
+from rushhour.hash_table import states_list
 from rushhour.position import Position
 from typing import List
 from termcolor import colored, COLORS, HIGHLIGHTS, ATTRIBUTES, RESET
@@ -47,9 +47,9 @@ class Board:
                     raise Win
 
                 # hash0 = hash(board)
-                # if hash0 not in states_checked_hash_table:
-                #     states_checked_hash_table[hash0] = [board]
-                new_boards.append(board)
+                if board not in states_list:
+                    new_boards.append(board)
+                    states_list.append(board)
 
                 # if hash0 in states_checked_hash_table and board not in \
                 #         states_checked_hash_table[hash0]:

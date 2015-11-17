@@ -36,11 +36,12 @@ def breath_search(initial: Board):
 
         count += 1
 
-        print(time.time() - start)
         path.append(nextPath)
+
         print("step ", count)
         print("new states:",len(nextPath))
         print("total states:",countPath(path))
+        print(time.time() - start)
 
 start = time.time()
 breath_search(game2)

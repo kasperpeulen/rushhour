@@ -15,8 +15,8 @@ class Board:
 
     def __init__(self, board_width: int, board_height: int, cars: List[Car],
                  goal: (int, Position), previous=None):
-        Car.boardHeight = board_height
-        Car.boardWidth = board_width
+        self.board_height = board_height
+        self.board_width = board_width
         self.previous = previous
         self.cars = cars
         self.goal = goal
@@ -31,11 +31,11 @@ class Board:
             for new_car in self.cars[i].next_cars(other_cars=list(self.cars)):
                 new_cars = list(self.cars)
                 new_cars[i] = new_car
-                board = Board(Car.boardHeight, Car.boardWidth, new_cars,
+                board = Board(self.board_height, self.board_width, new_cars,
                               self.goal, previous=self)
 
                 if board.is_winner():
-                    raise Win
+
                     print("yeaaaaah")
                     print(time.time())
                     state = board
@@ -46,7 +46,7 @@ class Board:
                     winning_path.reverse()
                     for board in winning_path:
                         print(board)
-                    exit(0)
+                    raise Win
 
                 hash0 = hash(board)
                 if hash0 not in states_checked_hash_table:
@@ -68,8 +68,8 @@ class Board:
 
     def __str__(self, *args, **kwargs):
         board = '\n'
-        for y in range(0, Car.boardHeight):
-            for x in range(0, Car.boardWidth):
+        for y in range(0, self.board_height):
+            for x in range(0, self.board_width):
                 if self.car_that_contains_position(Position(x, y)) is not None:
                     i = self.cars.index(
                         self.car_that_contains_position(Position(x, y)))

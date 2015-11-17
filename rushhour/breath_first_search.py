@@ -44,5 +44,5 @@ def breath_search(initial: Board):
         print(time.time() - start)
 
 start = time.time()
-breath_search(game2)
+breath_search(game4)
 

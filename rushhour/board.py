@@ -4,7 +4,7 @@ import random
 import time
 
 from rushhour.car import Car
-from rushhour.hash_table import states_list
+from rushhour.hash_table import states_checked_hash_table
 from rushhour.position import Position
 from typing import List
 from termcolor import colored, COLORS, HIGHLIGHTS, ATTRIBUTES, RESET
@@ -46,15 +46,15 @@ class Board:
                         print(board)
                     raise Win
 
-                # hash0 = hash(board)
-                if board not in states_list:
+                hash0 = hash(board)
+                if hash0 not in states_checked_hash_table:
+                    states_checked_hash_table[hash0] = [board]
                     new_boards.append(board)
-                    states_list.append(board)
 
-                # if hash0 in states_checked_hash_table and board not in \
-                #         states_checked_hash_table[hash0]:
-                #     new_boards.append(board)
-                #     states_checked_hash_table[hash0].append(board)
+                if hash0 in states_checked_hash_table and board not in \
+                        states_checked_hash_table[hash0]:
+                    new_boards.append(board)
+                    states_checked_hash_table[hash0].append(board)
 
         return new_boards
 
@@ -68,9 +68,9 @@ class Board:
         board = '\n'
         for y in range(0, self.board_height):
             for x in range(0, self.board_width):
-                if self.car_that_contains_position(Position(x, y)) is not None:
+                if self.car_that_contains_position(Position.new(x, y)) is not None:
                     i = self.cars.index(
-                        self.car_that_contains_position(Position(x, y)))
+                        self.car_that_contains_position(Position.new(x, y)))
                     if i == 0:
 
                         board += colored(str(i).zfill(2), 'red') + ' '

@@ -5,8 +5,19 @@ class Position:
         self.x = x
         self.y = y
 
+    @staticmethod
+    def new(x: int, y: int):
+        return Position(x,y)lim
+        hash = x + y * 100
+        if hash in cache:
+            return cache[hash]
+        else:
+            new_position = Position(x,y)
+            cache[hash] = new_position
+            return new_position
+
     def __add__(self, other: 'Position') -> 'Position':
-        return Position(self.x + other.x, self.y + other.y)
+        return Position.new(self.x + other.x, self.y + other.y)
 
     def __eq__(self, other: 'Position') -> bool:
         return self.x == other.x and self.y == other.y
@@ -17,3 +28,5 @@ class Position:
     def __str__(self) -> str:
         return "Position(" + str(self.x) + ", " + str(self.y) + ")"
 
+
+cache = {}

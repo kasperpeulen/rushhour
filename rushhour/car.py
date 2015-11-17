@@ -13,18 +13,18 @@ class Car:
         self.length = length
 
         if self.horizontal:
-            self.end = self.start + Position(length - 1, 0)
+            self.end = self.start + Position.new(length - 1, 0)
         else:
-            self.end = self.start + Position(0, length - 1)
+            self.end = self.start + Position.new(0, length - 1)
 
         if length == 2:
             self.positions = [self.start, self.end]
         else:
             if horizontal:
-                self.positions = [self.start, self.start + Position(1, 0),
+                self.positions = [self.start, self.start + Position.new(1, 0),
                                   self.end]
             else:
-                self.positions = [self.start, self.start + Position(0, 1),
+                self.positions = [self.start, self.start + Position.new(0, 1),
                                   self.end]
 
     def is_valid(self) -> bool:
@@ -35,10 +35,10 @@ class Car:
 
     def move(self, steps: int) -> 'Car':
         if self.horizontal:
-            return Car(self.start + Position(steps, 0), self.horizontal,
+            return Car(self.start + Position.new(steps, 0), self.horizontal,
                        self.length)
         else:
-            return Car(self.start + Position(0, steps), self.horizontal,
+            return Car(self.start + Position.new(0, steps), self.horizontal,
                        self.length)
 
     def no_clash_all_cars(self, other_cars: List['Car']):
@@ -86,7 +86,7 @@ class Car:
         s = "\n"
         for y in range(0, self.boardHeight):
             for x in range(0, self.boardWidth):
-                if Position(x, y) in self.positions:
+                if Position.new(x, y) in self.positions:
                     s += "C "
                 else:
                     s += "X "

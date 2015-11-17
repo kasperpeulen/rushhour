@@ -3,7 +3,13 @@ import time
 from rushhour.board import Board, Win
 from rushhour.car import Car
 from rushhour.games import game2, level1, game4
-from rushhour.hash_table import states_checked_hash_table
+# from rushhour.hash_table import states_checked_hash_table
+
+def countPath(paths):
+    count = 0
+    for p in paths:
+        count += len(p)
+    return count
 
 def breath_search(initial: Board):
     Car.boardWidth = initial.board_width
@@ -11,10 +17,13 @@ def breath_search(initial: Board):
     # initial board (stage 0)
     path = []
     path.append([initial])
+
+    # states_checked_hash_table[hash(initial)] = [initial]
+    print("step 0")
+    print("new states:",1)
+    print("total states:",countPath(path))
     print(initial)
-    states_checked_hash_table[hash(initial)] = [initial]
-    print("step 1")
-    count = 1
+    count = 0
     while True:
         nextPath = []
         for board in path[-1]:
@@ -24,11 +33,15 @@ def breath_search(initial: Board):
                 end = time.time()
                 print(end - start)
                 exit(0)
-        print(len(nextPath))
-        print(time.time() - start)
+
         count += 1
-        print("step ", count)
+
+        print(time.time() - start)
         path.append(nextPath)
+        print("step ", count)
+        print("new states:",len(nextPath))
+        print("total states:",countPath(path))
 
 start = time.time()
 breath_search(game2)
+

@@ -1,1 +1,1 @@
-states_checked_hash_table = {}
+# states_checked_hash_table = {}

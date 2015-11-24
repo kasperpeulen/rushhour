@@ -10,18 +10,16 @@ class Car:
     @staticmethod
     def new(start: Position, horizontal: bool, length: int):
         hash = start.x + start.y * 100
-
-        car = Car(start, horizontal, length)
-
+        if horizontal:
+            hash += 1000
+        if length == 3:
+            hash += 10000
         if hash in cache:
-            if car in cache[hash]:
-                return car
-            else:
-                cache[hash].append(car)
-                return car
+            return cache[hash]
         else:
-            cache[hash] = [car]
-            return car
+            new_car = Car(start, horizontal, length)
+            cache[hash] = new_car
+            return new_car
 
     def __init__(self, start: Position, horizontal: bool, length: int):
         self.start = start
@@ -52,10 +50,10 @@ class Car:
     def move(self, steps: int) -> 'Car':
         if self.horizontal:
             return Car.new(self.start + Position.new(steps, 0), self.horizontal,
-                       self.length)
+                           self.length)
         else:
             return Car.new(self.start + Position.new(0, steps), self.horizontal,
-                       self.length)
+                           self.length)
 
     def no_clash_all_cars(self, other_cars: List['Car']):
         for other_car in other_cars:
@@ -64,12 +62,13 @@ class Car:
         return True
 
     def no_clash(self, other_car: 'Car') -> bool:
-        set1 = set(self.positions)
-        set2 = set(other_car.positions)
-        if set1.intersection(set2) == set([]):
-            return True
-        else:
-            return False
+        other_start = other_car.start
+        other_end = other_car.end
+
+        return not (self.end.x >= other_start.x and
+                    self.start.x <= other_end.x and
+                    self.end.y >= other_start.y and
+                    self.start.y <= other_end.y)
 
     def next_cars(self, other_cars: List['Car']) -> List['Car']:
         """
@@ -114,5 +113,6 @@ class Car:
 
     def __eq__(self, other: 'Car') -> bool:
         return self.positions == other.positions
+
 
 cache = {}

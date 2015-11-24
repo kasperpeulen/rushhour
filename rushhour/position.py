@@ -7,7 +7,7 @@ class Position:
 
     @staticmethod
     def new(x: int, y: int):
-        hash = (x + 2) + 15 * (y + 1)
+        hash = x + y * 100
         if hash in cache:
             return cache[hash]
         else:

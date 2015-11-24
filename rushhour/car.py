@@ -28,20 +28,18 @@ class Car:
         self.length = length
 
         # calculate end position 
-        if self.horizontal:
-            self.end = self.start + Position.new(length - 1, 0)
-        else:
-            self.end = self.start + Position.new(0, length - 1)
-
-        if length == 2:
+        if self.horizontal and length == 2:
+            self.end = self.start + Position.new(1, 0)
             self.positions = [self.start, self.end]
+        elif not self.horizontal and length == 2:
+            self.end = self.start + Position.new(0, 1)
+            self.positions = [self.start, self.end]
+        elif self.horizontal and length == 3:
+            self.end = self.start + Position.new(2, 0)
+            self.positions = [self.start, self.start + Position.new(1, 0), self.end]
         else:
-            if horizontal:
-                self.positions = [self.start, self.start + Position.new(1, 0),
-                                  self.end]
-            else:
-                self.positions = [self.start, self.start + Position.new(0, 1),
-                                  self.end]
+            self.end = self.start + Position.new(0, 2)
+            self.positions = [self.start, self.start + Position.new(0, 1), self.end]
 
     def is_valid(self) -> bool:
         return self.start.x >= 0 \
@@ -73,10 +71,6 @@ class Car:
                     self.start.y <= other_end.y)
 
     def next_cars(self, other_cars: List['Car']) -> List['Car']:
-        """
-        Calculates all possible next cars bounded by the [boardWidth] and
-        [boardHeight]. Doesn't remove cars that overlap.
-        """
         # make sure self is removed if it is in the list of other cars
         if self in other_cars:
             other_cars.remove(self)

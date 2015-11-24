@@ -18,13 +18,8 @@ class Position:
     def __add__(self, other: 'Position') -> 'Position':
         return Position.new(self.x + other.x, self.y + other.y)
 
-    def __eq__(self, other: 'Position') -> bool:
-        return self.x == other.x and self.y == other.y
-
     def __hash__(self) -> int:
         return hash((self.x, self.y))
-
-
 
     def __str__(self) -> str:
         return "Position(" + str(self.x) + ", " + str(self.y) + ")"

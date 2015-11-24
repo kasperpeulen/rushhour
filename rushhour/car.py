@@ -105,10 +105,5 @@ class Car:
 
     def __hash__(self) -> int:
         return self.hash
-        # return hash((self.start, self.horizontal, self.length))
-
-    def __eq__(self, other: 'Car') -> bool:
-        return self.positions == other.positions
-
 
 cache = {}

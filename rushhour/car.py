@@ -4,8 +4,8 @@ from typing import List
 
 class Car:
     """ todo """
-    boardWidth = 6
-    boardHeight = 6
+    boardWidth = None
+    boardHeight = None
 
     @staticmethod
     def new(start: Position, horizontal: bool, length: int):
@@ -27,6 +27,7 @@ class Car:
         self.horizontal = horizontal
         self.length = length
 
+        # calculate end position 
         if self.horizontal:
             self.end = self.start + Position.new(length - 1, 0)
         else:

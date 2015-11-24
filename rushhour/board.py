@@ -50,8 +50,7 @@ class Board:
                 if hash0 not in states_checked_hash_table:
                     states_checked_hash_table[hash0] = [board]
                     new_boards.append(board)
-
-                if hash0 in states_checked_hash_table and board not in \
+                elif board not in \
                         states_checked_hash_table[hash0]:
                     new_boards.append(board)
                     states_checked_hash_table[hash0].append(board)

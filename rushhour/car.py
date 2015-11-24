@@ -17,11 +17,12 @@ class Car:
         if hash in cache:
             return cache[hash]
         else:
-            new_car = Car(start, horizontal, length)
+            new_car = Car(start, horizontal, length, hash)
             cache[hash] = new_car
             return new_car
 
-    def __init__(self, start: Position, horizontal: bool, length: int):
+    def __init__(self, start: Position, horizontal: bool, length: int, hash):
+        self.hash = hash
         self.start = start
         self.horizontal = horizontal
         self.length = length
@@ -80,19 +81,13 @@ class Car:
             other_cars.remove(self)
         new_cars = []
         new_car = self.move(1)
-        while new_car.is_valid():
-            if new_car.no_clash_all_cars(other_cars):
-                new_cars.append(new_car)
-            else:
-                break
+        while new_car.is_valid() and new_car.no_clash_all_cars(other_cars):
+            new_cars.append(new_car)
             new_car = new_car.move(1)
 
         new_car = self.move(-1)
-        while new_car.is_valid():
-            if new_car.no_clash_all_cars(other_cars):
-                new_cars.append(new_car)
-            else:
-                break
+        while new_car.is_valid() and new_car.no_clash_all_cars(other_cars):
+            new_cars.append(new_car)
             new_car = new_car.move(-1)
 
         return new_cars
@@ -109,7 +104,8 @@ class Car:
         return s
 
     def __hash__(self) -> int:
-        return hash((self.start, self.horizontal, self.length))
+        return self.hash
+        # return hash((self.start, self.horizontal, self.length))
 
     def __eq__(self, other: 'Car') -> bool:
         return self.positions == other.positions

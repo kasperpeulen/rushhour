@@ -3,12 +3,17 @@ from typing import List
 
 
 class Car:
-    """ todo """
+    """
+    Class for cars specified by start, horizontal and length
+    """
     boardWidth = None
     boardHeight = None
 
     @staticmethod
     def new(start: Position, horizontal: bool, length: int):
+        """
+        Check if position is already in cache. If not make new instance and save in cache.
+        """
         hash = start.x + start.y * 100
         if horizontal:
             hash += 1000
@@ -22,6 +27,10 @@ class Car:
             return new_car
 
     def __init__(self, start: Position, horizontal: bool, length: int, hash):
+        """
+        Make position consisting of starting position (x,y), horizontal boolean (if horizontal: True, if vertical:
+        False) and the length of the car (2 or 3).
+        """
         self.hash = hash
         self.start = start
         self.horizontal = horizontal
@@ -42,12 +51,18 @@ class Car:
             self.positions = [self.start, self.start + Position.new(0, 1), self.end]
 
     def is_valid(self) -> bool:
+        """
+        Check if new position is still on the board.
+        """
         return self.start.x >= 0 \
                and self.start.y >= 0 \
                and self.end.x < self.boardWidth \
                and self.end.y < self.boardHeight
 
     def move(self, steps: int) -> 'Car':
+        """
+        Move car "step" amount of places.
+        """
         if self.horizontal:
             return Car.new(self.start + Position.new(steps, 0), self.horizontal,
                            self.length)
@@ -56,12 +71,18 @@ class Car:
                            self.length)
 
     def no_clash_all_cars(self, other_cars: List['Car']):
+        """
+        Check if new car clashes with other cars (list).
+        """
         for other_car in other_cars:
             if not self.no_clash(other_car):
                 return False
         return True
 
     def no_clash(self, other_car: 'Car') -> bool:
+        """
+        Check if car clashes with specific car.
+        """
         other_start = other_car.start
         other_end = other_car.end
 
@@ -71,6 +92,9 @@ class Car:
                     self.start.y <= other_end.y)
 
     def next_cars(self, other_cars: List['Car']) -> List['Car']:
+        """
+        Check all possible new positions of car
+        """
         # make sure self is removed if it is in the list of other cars
         if self in other_cars:
             other_cars.remove(self)
@@ -88,6 +112,9 @@ class Car:
         return new_cars
 
     def __str__(self) -> str:
+        """
+        Visualize the car in the board. C means there is a car at that position, X means there is no car
+        """
         s = "\n"
         for y in range(0, self.boardHeight):
             for x in range(0, self.boardWidth):

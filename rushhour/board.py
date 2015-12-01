@@ -11,10 +11,15 @@ from termcolor import colored, COLORS, HIGHLIGHTS, ATTRIBUTES, RESET
 
 
 class Board:
-    """ todo """
+    """
+    Board definition
+    """
 
     def __init__(self, board_width: int, board_height: int, cars: List[Car],
                  goal: (int, Position), previous=None):
+        """
+        Define values for board. Previous is parental state for path checking.
+        """
         self.board_height = board_height
         self.board_width = board_width
         self.previous = previous
@@ -22,10 +27,16 @@ class Board:
         self.goal = goal
 
     def is_winner(self) -> bool:
+        """
+        Check if car is at goal (board exit).
+        """
         (index, position) = self.goal
         return self.cars[index].end == position
 
     def possible_next_boards(self):
+        """
+        Define new possible boards (states).
+        """
         new_boards = []
         for i in range(0, len(self.cars)):
             for new_car in self.cars[i].next_cars(other_cars=list(self.cars)):
@@ -58,12 +69,18 @@ class Board:
         return new_boards
 
     def car_that_contains_position(self, position: Position):
+        """
+        Returns car at certain position.
+        """
         for i in range(0, len(self.cars)):
             if position in self.cars[i].positions:
                 return self.cars[i]
         return None
 
     def __str__(self, *args, **kwargs):
+        """
+        Give color and number to cars in visualization.
+        """
         board = '\n'
         for y in range(0, self.board_height):
             for x in range(0, self.board_width):
@@ -93,16 +110,6 @@ def color(text, i):
 
     Available text colors:
         red, green, yellow, blue, magenta, cyan, white.
-
-    Available text highlights:
-        on_red, on_green, on_yellow, on_blue, on_magenta, on_cyan, on_white.
-
-    Available attributes:
-        bold, dark, underline, blink, reverse, concealed.
-
-    Example:
-        colored('Hello, World!', 'red', 'on_grey', ['blue', 'blink'])
-        colored('Hello, World!', 'green')
     """
     if os.getenv('ANSI_COLORS_DISABLED') is None:
         fmt_str = '\033[%dm%s'
@@ -112,5 +119,5 @@ def color(text, i):
 
 class Win(Exception):
     """
-
+    Raised when solution is found.
     """

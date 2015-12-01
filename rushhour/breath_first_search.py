@@ -6,12 +6,18 @@ from rushhour.games import game2, level1, game4
 # from rushhour.hash_table import states_checked_hash_table
 
 def countPath(paths):
+    """
+    Count every step in tree (depth).
+    """
     count = 0
     for p in paths:
         count += len(p)
     return count
 
 def breath_search(initial: Board):
+    """
+    Breath First Search algorithm. Also shows steps, new states and total states.
+    """
     Car.boardWidth = initial.board_width
     Car.boardHeight = initial.board_height
     # initial board (stage 0)

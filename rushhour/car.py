@@ -1,6 +1,8 @@
 from rushhour.position import Position
 from typing import List
 
+from rushhour.range import Range, PositionRange
+
 
 class Car:
     """
@@ -78,6 +80,17 @@ class Car:
             if not self.no_clash(other_car):
                 return False
         return True
+
+
+    def clashes_with_range(self, range: PositionRange):
+        """
+        Check if car clashes with imaginary car that can be of any length.
+        """
+        return (self.end.x >= range.x.begin and
+                self.start.x <= range.x.end and
+                self.end.y >= range.y.begin and
+                self.start.y <= range.y.end)
+
 
     def no_clash(self, other_car: 'Car') -> bool:
         """

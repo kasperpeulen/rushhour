@@ -9,6 +9,8 @@ from rushhour.position import Position
 from typing import List
 from termcolor import colored, COLORS, HIGHLIGHTS, ATTRIBUTES, RESET
 
+from rushhour.range import Goal
+
 
 class Board:
     """
@@ -24,7 +26,8 @@ class Board:
         self.board_width = board_width
         self.previous = previous
         self.cars = cars
-        self.goal = goal
+        (index, pos) = goal
+        self.goal = Goal.from_position(index, pos)
 
     def is_winner(self) -> bool:
         """
@@ -67,6 +70,18 @@ class Board:
                     states_checked_hash_table[hash0].append(board)
 
         return new_boards
+
+    def cars_that_clash_with_goal(self) -> List[Car]:
+        (goal_index, goal_position) = self.goal
+        red_car = self.cars[goal_index]
+        other_cars = List(self.cars)
+        other_cars.remove(red_car)
+        move_car = red_car.move(1)
+
+        while(move_car.end != goal_position):
+
+            red_car.move(1).no_clash_all_cars(other_cars)
+            red_car
 
     def car_that_contains_position(self, position: Position):
         """

@@ -1,0 +1,26 @@
+
+# breath_search(game4)
+
+# 1, 2, 3, 4, 5, 6, 7, 8, 0, 9, 10, 15, 14, 13, 16, 17, 20, 23, 24, 35, 40, 43, 38, 39, 34, 30, 32, 31
+#1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 10, 12, 13, 14, 15, 16, 17, 19, 20, 23, 24, 27, 28, 29, 30, 31, 32, 33, 34, 35, 38, 39, 40, 42, 43
+
+# 23, 24, 29, 30, 31, 34, 32, 35, 40, 42, 43, 38, 39, 28, 27, 36, 37, 11, 33, 21, 22, 25
+
+# Do you want to change the goal? True/False True
+# Give the index of the goal car: (e.g.: 2) 11
+# Give the position of the goal: (e.g.: 2,3) 8,2
+# Tell me which cars to freeze: (e.g.: 10, 14, 16) 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 10, 12, 13, 14, 15, 16, 17, 19, 20, 23, 24, 27, 28, 29, 30, 31, 32, 33, 34, 35, 38, 39, 40, 42, 43
+
+
+You won! Do you want to save this game and proceed? True/False True
+Do you want to change the goal? True/False True
+Give the index of the goal car: (e.g.: 2) 20
+Give the position of the goal: (e.g.: 2,3) 5,9
+Tell me which cars to freeze: (e.g.: 10, 14, 16) 23, 24, 29, 30, 31, 34, 32, 35, 40, 42, 43, 38, 39, 28, 27, 36, 37, 11, 33, 21, 22, 25
+False
+
+This game is too hard for me! Aborting ....
+Do you want to change the goal? True/False True
+Give the index of the goal car: (e.g.: 2) 0
+Give the position of the goal: (e.g.: 2,3) 11,5
+Tell me which cars to freeze: (e.g.: 10, 14, 16) 23, 24, 29, 30, 31, 34, 32, 35, 40, 42, 43, 38, 39, 28, 27, 36, 37, 11, 33, 21, 25

@@ -17,7 +17,7 @@ def countPath(paths):
         count += len(p)
     return count
 
-def breath_search(initial: Board):
+def breath_search(initial: Board, total_time: int):
     """
     Breath First Search algorithm. Also shows steps, new states and total states.
     """
@@ -38,12 +38,13 @@ def breath_search(initial: Board):
     while True:
         nextPath = []
         for board in path[-1]:
-            try:
-                nextPath.extend(board.possible_next_boards())
-            except Win:
-                end = time.time()
-                print(end - start)
-                exit(0)
+            # try:
+            nextPath.extend(board.possible_next_boards())
+            # except Win:
+            #     end = time.time()
+            #     print(end - start)
+            #     return
+            #     # exit(0)
 
         count += 1
 
@@ -51,13 +52,15 @@ def breath_search(initial: Board):
         # print(len(hash_table.states_checked_hash_table))
         print("step ", count)
         print("new states:", len(nextPath))
+        if len(nextPath) == 0:
+            print("States space is explored, no solution found...")
+            print("Try freezing less cars.")
+            return
         print("total states:", countPath(path))
         print(time.time() - start)
-        if (time.time() - start) > 1:
+        if (time.time() - start) > total_time:
             print("This game is too hard for me! Aborting ....")
             return
 
 
 
-
-# breath_search(game4)

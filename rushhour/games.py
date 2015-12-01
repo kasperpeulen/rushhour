@@ -212,6 +212,5 @@ game7 = Board(
   Car.new(length= 2, horizontal= False, start= Position.new(11, 10)),
 ])
 
-print (game6)
 
 games = [game1, game2, game3, game4, game5, game6, game7]

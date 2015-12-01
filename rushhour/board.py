@@ -4,7 +4,7 @@ import random
 import time
 
 from rushhour import hash_table
-from rushhour.car import Car, Goal
+from rushhour.car import Car
 from rushhour.position import Position
 from typing import List
 from termcolor import colored, COLORS, HIGHLIGHTS, ATTRIBUTES, RESET
@@ -25,8 +25,9 @@ class Board:
         self.previous = previous
         self.cars = cars
         self.goal = goal
-        (index, pos) = goal
-        self.temp_goal = Goal.from_position(cars[index], pos)
+        # (index, pos) = goal
+        # self.temp_goal = Goal.from_position(cars[index], pos)
+        self.moves = ""
 
     def is_winner(self) -> bool:
         """
@@ -46,6 +47,7 @@ class Board:
                 new_cars[i] = new_car
                 board = Board(self.board_height, self.board_width, new_cars,
                               self.goal, previous=self)
+                board.moves = str(i)
 
                 if board.is_winner():
                     print("yeaaaaah")
@@ -57,7 +59,8 @@ class Board:
                     winning_path.reverse()
                     for board in winning_path:
                         print(board)
-                    raise Win
+                        print(board.moves)
+                    raise Win(board)
 
                 hash0 = hash(board)
                 if hash0 not in hash_table.states_checked_hash_table:
@@ -69,18 +72,6 @@ class Board:
                     hash_table.states_checked_hash_table[hash0].append(board)
 
         return new_boards
-
-    def cars_that_clash_with_goal(self) -> List[Car]:
-        (goal_index, goal_position) = self.goal
-        red_car = self.cars[goal_index]
-        other_cars = List(self.cars)
-        other_cars.remove(red_car)
-        move_car = red_car.move(1)
-
-        while(move_car.end != goal_position):
-
-            red_car.move(1).no_clash_all_cars(other_cars)
-            red_car
 
     def car_that_contains_position(self, position: Position):
         """
@@ -135,3 +126,5 @@ class Win(Exception):
     """
     Raised when solution is found.
     """
+    def __init__(self, board: Board):
+        self.board = board

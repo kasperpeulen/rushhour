@@ -3,13 +3,11 @@ import random
 
 import time
 
-from rushhour.car import Car
-from rushhour.hash_table import states_checked_hash_table
+from rushhour import hash_table
+from rushhour.car import Car, Goal
 from rushhour.position import Position
 from typing import List
 from termcolor import colored, COLORS, HIGHLIGHTS, ATTRIBUTES, RESET
-
-from rushhour.range import Goal
 
 
 class Board:
@@ -26,8 +24,9 @@ class Board:
         self.board_width = board_width
         self.previous = previous
         self.cars = cars
+        self.goal = goal
         (index, pos) = goal
-        self.goal = Goal.from_position(index, pos)
+        self.temp_goal = Goal.from_position(cars[index], pos)
 
     def is_winner(self) -> bool:
         """
@@ -61,13 +60,13 @@ class Board:
                     raise Win
 
                 hash0 = hash(board)
-                if hash0 not in states_checked_hash_table:
-                    states_checked_hash_table[hash0] = [board]
+                if hash0 not in hash_table.states_checked_hash_table:
+                    hash_table.states_checked_hash_table[hash0] = [board]
                     new_boards.append(board)
                 elif board not in \
-                        states_checked_hash_table[hash0]:
+                        hash_table.states_checked_hash_table[hash0]:
                     new_boards.append(board)
-                    states_checked_hash_table[hash0].append(board)
+                    hash_table.states_checked_hash_table[hash0].append(board)
 
         return new_boards
 

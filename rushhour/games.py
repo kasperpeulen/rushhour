@@ -4,6 +4,7 @@ from rushhour.position import Position
 
 
 
+
 game4 = Board(goal=(0, Position.new(8, 4)),
     board_height=9,
     board_width=9,
@@ -115,3 +116,10 @@ game7 = Board(
   Car.new(length= 2, horizontal= False, start= Position.new(11, 8)),
   Car.new(length= 2, horizontal= False, start= Position.new(11, 10)),
 ])
+
+game1 = None
+game3 = None
+game5 = None
+game6 = None
+
+games = [game1, game2, game3, game4, game5, game6, game7]

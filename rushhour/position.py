@@ -26,6 +26,12 @@ class Position:
         """
         return Position.new(self.x + other.x, self.y + other.y)
 
+    def __lt__(self, other: 'Position') -> bool:
+        return self.x <= other.x and self.y <= other.y
+
+    def __gt__(self, other: 'Position') -> bool:
+        return self.x >= other.x and self.y >= other.y
+
     def __str__(self) -> str:
         """
         String representation

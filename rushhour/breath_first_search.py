@@ -3,7 +3,7 @@ import time
 from rushhour import hash_table
 from rushhour.board import Board, Win
 from rushhour.car import Car
-from rushhour.games import game2, level1, game4
+from rushhour.games import game2, level1, game4, game5, game6, game1
 # from rushhour.hash_table import states_checked_hash_table
 import rushhour.hash_table
 
@@ -38,13 +38,13 @@ def breath_search(initial: Board, total_time: int):
     while True:
         nextPath = []
         for board in path[-1]:
-            # try:
-            nextPath.extend(board.possible_next_boards())
-            # except Win:
-            #     end = time.time()
-            #     print(end - start)
-            #     return
-            #     # exit(0)
+            try:
+                nextPath.extend(board.possible_next_boards())
+            except Win:
+                end = time.time()
+                print(end - start)
+                return
+                # exit(0)
 
         count += 1
 
@@ -64,3 +64,4 @@ def breath_search(initial: Board, total_time: int):
 
 
 
+breath_search(game5, 2000000000)

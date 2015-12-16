@@ -1,71 +1,12 @@
-from rushhour.position import Position
-from typing import List
-
-
-# class Range:
-#     def __init__(self, begin: int, end: int):
-#         self.begin = begin
-#         self.end = end
-#
-#     def get_list(self) -> List[int]:
-#         return list(range(self.begin, self.end + 1))
-#
-# class Goal:
-#     def __init__(self, car: 'Car', moves: int):
-#         self.car = car
-#         self.moves = moves
-#         self.end_position = car.move(moves).end
-#
-#     @staticmethod
-#     def from_position(car: 'Car', goal_pos: Position):
-#         if car.horizontal:
-#             beginx = car.end.x
-#             endx = goal_pos.x
-#             moves = endx - beginx
-#         else:
-#             beginy = car.end.y
-#             endy = goal_pos.y
-#             moves = endy - beginy
-#         return Goal(car, moves)
-#
-# class PositionRange:
-#     def __init__(self, x: Range, y: Range):
-#         self.x = x
-#         self.y = y
-#
-#     @staticmethod
-#     def from_goal(goal: Goal):
-#         if goal.car.horizontal:
-#             y = Range(goal.car.start.y, goal.car.start.y)
-#             x = Range(goal.car.end.x + 1, goal.car.end.x + goal.moves)
-#         else:
-#             y = Range(goal.car.end.y + 1, goal.car.end.y + goal.moves)
-#             x = Range(goal.car.end.x, goal.car.end.x)
-#         return PositionRange(x, y)
-#
-#     def __str__(self) -> str:
-#         """
-#         Visualize the car in the board. C means there is a car at that position, X means there is no car
-#         """
-#         s = "\n"
-#         print(self.x.get_list())
-#         print(self.y.get_list())
-#
-#         for y in range(0, Car.boardHeight):
-#             for x in range(0, Car.boardWidth):
-#                 if x in self.x.get_list() and y in self.y.get_list():
-#                     s += "C "
-#                 else:
-#                     s += "X "
-#             s += "\n"
-#         return s
+from .position import Position
+from typing import List, Set
 
 class Car:
     """
     Class for cars specified by start, horizontal and length
     """
-    boardWidth = None
-    boardHeight = None
+    boardWidth = 6
+    boardHeight = 6
 
     @staticmethod
     def new(start: Position, horizontal: bool, length: int, immobile=False):
@@ -84,7 +25,8 @@ class Car:
             cache[hash] = new_car
             return new_car
 
-    def __init__(self, start: Position, horizontal: bool, length: int, hash, immobile=False):
+    def __init__(self, start: Position, horizontal: bool, length: int, hash,
+                 immobile=False):
         """
         Make position consisting of starting position (x,y), horizontal boolean (if horizontal: True, if vertical:
         False) and the length of the car (2 or 3).
@@ -104,10 +46,12 @@ class Car:
             self.positions = [self.start, self.end]
         elif self.horizontal and length == 3:
             self.end = self.start + Position.new(2, 0)
-            self.positions = [self.start, self.start + Position.new(1, 0), self.end]
+            self.positions = [self.start, self.start + Position.new(1, 0),
+                              self.end]
         else:
             self.end = self.start + Position.new(0, 2)
-            self.positions = [self.start, self.start + Position.new(0, 1), self.end]
+            self.positions = [self.start, self.start + Position.new(0, 1),
+                              self.end]
 
     def is_valid(self) -> bool:
         """
@@ -137,17 +81,6 @@ class Car:
             if not self.no_clash(other_car):
                 return False
         return True
-
-
-    # def clashes_with_range(self, range: PositionRange):
-    #     """
-    #     Check if car clashes with imaginary car that can be of any length.
-    #     """
-    #     return (self.end.x >= range.x.begin and
-    #             self.start.x <= range.x.end and
-    #             self.end.y >= range.y.begin and
-    #             self.start.y <= range.y.end)
-
 
     def no_clash(self, other_car: 'Car') -> bool:
         """
@@ -185,6 +118,116 @@ class Car:
 
         return new_cars
 
+    def goal_pos_from_move(self, move: int) -> Position:
+        if self.horizontal:
+            if move > 0:
+                goal_pos = Position.new(self.end.x + move, self.end.y)
+            else:
+                goal_pos = Position.new(self.start.x + move, self.start.y)
+        else:
+            if move > 0:
+                goal_pos = Position.new(self.end.x, self.end.y + move)
+            else:
+                goal_pos = Position.new(self.start.x, self.start.y + move)
+        return goal_pos
+
+    def real_possible_moves(self, other_cars: List['Car'], goal) -> Set:
+        possible_movement = self.possible_movement(other_cars)
+        from rushhour.board import MegaCar
+        resolve_block_list = self.resolve_block(MegaCar.from_goal(goal, other_cars))
+        return set.intersection(set(possible_movement), set(resolve_block_list))
+
+    def possible_movement(self, other_cars: List['Car']) -> List[int]:
+        cars_in_line = self.cars_in_line(other_cars)
+
+        cars_in_line_negative = 0
+        for car in cars_in_line:
+            if self.horizontal:
+                if car.end.x < self.start.x:
+                    cars_in_line_negative += car.length
+            else:
+                if car.end.y < self.start.y:
+                    cars_in_line_negative += car.length
+
+        # print(cars_in_line_negative)
+
+        cars_in_line_positive = 0
+        for car in cars_in_line:
+            if self.horizontal:
+                if car.start.x > self.end.x:
+                    cars_in_line_positive += car.length
+            else:
+                if car.start.y > self.end.y:
+                    cars_in_line_positive += car.length
+        # print(cars_in_line_positive)
+
+        moves = []
+        if self.horizontal:
+            can_move_negative = self.start.x - cars_in_line_negative
+        else:
+            can_move_negative = self.start.y - cars_in_line_negative
+
+        if self.horizontal:
+            can_move_positive = Car.boardWidth - self.end.x - cars_in_line_positive - 1
+        else:
+            can_move_positive = Car.boardHeight - self.end.y - cars_in_line_positive - 1
+
+        for i in range(-1, -can_move_negative - 1, -1):
+            moves.append(i)
+        for i in range(1, can_move_positive + 1, 1):
+            moves.append(i)
+        return moves
+
+    def resolve_block(self, mega_car: 'MegaCar') -> List[int]:
+        moves = []
+
+        if not self.horizontal:
+            negative_move = self.end.y - mega_car.start.y + 1
+        else:
+            negative_move = self.end.x - mega_car.start.x + 1
+
+        if not self.horizontal:
+            positive_move = self.start.y - mega_car.start.y - 1
+        else:
+            positive_move = self.start.x - mega_car.start.x - 1
+
+        negative_move = -negative_move
+        positive_move = -positive_move
+
+        while True:
+            moves.append(negative_move)
+            if self.horizontal:
+                if self.start.x + negative_move <= 0:
+                    break
+            else:
+                if self.start.y + negative_move <= 0:
+                    break
+            negative_move += -1
+
+        while True:
+            moves.append(positive_move)
+            if self.horizontal:
+                if self.end.x + positive_move >= Car.boardWidth - 1:
+                    break
+            else:
+                if self.end.y + positive_move >= Car.boardHeight - 1:
+                    break
+            positive_move += 1
+        return moves
+
+    def cars_in_line(self, other_cars: List['Car']) -> List['Car']:
+        other_cars = list(other_cars)
+        other_cars.remove(self)
+        result = []
+        for car in other_cars:
+            if car.horizontal:
+                if self.horizontal and car.start.y == self.start.y:
+                    result.append(car)
+            else:
+                if not self.horizontal and car.start.x == self.start.x:
+                    result.append(car)
+        return result
+
     def __str__(self) -> str:
         """
         Visualize the car in the board. C means there is a car at that position, X means there is no car
@@ -201,5 +244,6 @@ class Car:
 
     def __hash__(self) -> int:
         return self.hash
+
 
 cache = {}

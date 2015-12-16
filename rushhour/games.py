@@ -1,6 +1,6 @@
-from rushhour.board import Board
-from rushhour.car import Car
-from rushhour.position import Position
+from .board import Board
+from .car import Car
+from .position import Position
 
 level1 = Board(cars=[
     Car.new(Position.new(2, 2), True, 2),

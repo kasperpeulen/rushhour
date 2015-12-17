@@ -1,7 +1,8 @@
 from rushhour import hash_table
 from rushhour.board import Board, Win
 from rushhour.car import Car
-from rushhour.games import level1, game5, game4, game2, game7, game1, game6
+from rushhour.games import level1, game5, game4, game2, game7, game1, game6, \
+    game3
 from typing import Dict, List
 import time
 
@@ -38,7 +39,7 @@ def find_best_boards(queue: Dict) -> List[Board]:
 
 start = time.time()
 try:
-    a_star_search(game2)
+    a_star_search(game4)
 except Win as win:
     end = time.time()
     print(end - start)

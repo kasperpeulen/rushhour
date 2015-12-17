@@ -64,4 +64,4 @@ def breath_search(initial: Board, total_time: int):
 
 
 
-breath_search(game5, 2000000000)
+breath_search(game2, 2000000000)

@@ -207,7 +207,7 @@ class Board:
     def calculate_tree(self, goal, depth, max_depth):
         depth += 1
         if (depth > max_depth):
-            return "..."
+            return '...'
         tree = {}
         for blocking_car in self.blocking_cars(goal):
             index = self.cars.index(blocking_car)
@@ -226,10 +226,15 @@ class Board:
 
 
     def a_star_count(self):
-        tree = self.calculate_tree(self.goal, 0, 5)
-        print(json.dumps(tree, indent=4, sort_keys=True))
-        return count_tree(tree) + self.count
+        tree = self.calculate_tree(self.goal, 0, 1)
+        # print(json.dumps(tree, indent=4, sort_keys=True))
+        # return count_tree2(tree) + self.count
+        if tree == 'possible':
+            return self.count
+        return count_tree2(tree) + self.count
 
+    def a_star_count_easy(self):
+        return len(self.blocking_cars(self.goal)) + self.count
 
     def blocking_value(self, goal: (int, Position)) -> int:
         blocking_cars = self.blocking_cars(goal)
@@ -325,10 +330,83 @@ def count_tree(tree: Dict) -> int:
     return count
 
 
+def count_tree2(tree: Dict) -> int:
+    # print(tree)
+    root = CarNode(None, [4], 0, 0)
+    root.children[0].children = []
 
-class Node:
-    def __init__(self, parent, children, car_index, move):
+    for key, value in tree.items():
+        car_children = root.children[0].children
+        car_children.append(CarNode(root.children[0], value, key, 1))
+
+    # print(root)
+    for i in range(len(CarNode.depth_nodes) - 1, 0, -1):
+        car_list = CarNode.depth_nodes[i]
+        move_list = []
+        for car in car_list:
+            move_parent = car.parent
+            move_value = 1
+            for car in move_parent.children:
+                move_value += car.value
+            move_parent.value = move_value
+            move_list.append(move_parent)
+        for move in move_list:
+            car_parent = move.parent
+            min_value = math.inf
+            for move_child in car_parent.children:
+                min_value = min(move_child.value, min_value)
+            car_parent.value = min_value
+    # print(root.value)
+    return root.value
+
+class CarNode:
+    depth_nodes = []
+
+    def __init__(self, parent: 'MoveNode', childrenInt: List[int], index: int, depth: int):
+        self.depth = depth
+        if len(CarNode.depth_nodes) < depth + 1:
+            CarNode.depth_nodes.append([self])
+        else:
+            CarNode.depth_nodes[depth].append(self)
         self.parent = parent
-        self.children = children
+        self.index = index
+        self.children = []
+
+        if type(childrenInt) is dict:
+            for key, value in childrenInt.items():
+                if value == '...' or value == 'possible':
+                    move_node = MoveNode(self, 0)
+                    move_node.value = 1
+                    self.value = 1
+                    if value == 'possible':
+                        car_parent = move_node.parent
+                        other_move_node = MoveNode(car_parent, 0)
+                        other_move_node.value = 1
+
+                        car_parent.children = [other_move_node]
+                    else:
+                        self.children.append(move_node)
+
+                else:
+                    move_node = MoveNode(self, key)
+                    move_node.children = []
+                    for k, v in value.items():
+                        new_depth = self.depth + 1
+                        move_node.children.append(CarNode(move_node, v, k, new_depth))
+                    self.children.append(move_node)
+        else:
+            for i in childrenInt:
+                self.children.append(MoveNode(self, i))
+
+    def __str__(self):
+        return "Car: " + str(self.index)
+
+class MoveNode:
+    def __init__(self, parent: 'CarNode', move: int):
+        self.parent = parent
+        self.move = move
+
+    def __str__(self):
+        return "Move: " + str(self.move)
 
 max_depth = 10

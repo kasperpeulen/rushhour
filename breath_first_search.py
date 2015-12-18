@@ -4,7 +4,6 @@ import hash_table
 from benchmark import BenchMark
 from board import Board, Win
 from car import Car
-from games import game2, level1, game4, game5, game6, game1
 
 
 def countPath(paths):

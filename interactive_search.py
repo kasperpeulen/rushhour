@@ -6,8 +6,6 @@ from games import games
 from position import Position
 
 def interactive_search(game_index):
-    # game_index = int(input("Which game do you want to solve? "))
-
     game = games[game_index - 1]
 
     print("Trying to solve game with breadth first algortihm... ")

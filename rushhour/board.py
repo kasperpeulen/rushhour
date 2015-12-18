@@ -207,7 +207,7 @@ class Board:
     def calculate_tree(self, goal, depth, max_depth):
         depth += 1
         if (depth > max_depth):
-            return '...'
+            return {}
         tree = {}
         for blocking_car in self.blocking_cars(goal):
             index = self.cars.index(blocking_car)
@@ -226,12 +226,12 @@ class Board:
 
 
     def a_star_count(self):
-        tree = self.calculate_tree(self.goal, 0, 1)
-        # print(json.dumps(tree, indent=4, sort_keys=True))
-        # return count_tree2(tree) + self.count
-        if tree == 'possible':
-            return self.count
-        return count_tree2(tree) + self.count
+        # tree = self.calculate_tree(self.goal, 0, 1)
+        # # print(json.dumps(tree, indent=4, sort_keys=True))
+        # # return count_tree2(tree) + self.count
+        # if tree == 'possible':
+        #     return self.count
+        return self.blocking_value(self.goal) + self.count
 
     def a_star_count_easy(self):
         return len(self.blocking_cars(self.goal)) + self.count

@@ -1,15 +1,11 @@
 import os
-import random
-import json
-import time
-
 import math
 
-from rushhour import hash_table
-from .car import Car
-from .position import Position
+import hash_table
+from car import Car
+from position import Position
 from typing import List, Dict
-from termcolor import colored, COLORS, HIGHLIGHTS, ATTRIBUTES, RESET
+from termcolor import colored, RESET
 
 class MegaCar:
     def __init__(self, start, end):
@@ -127,6 +123,8 @@ class Board:
     Board definition
     """
 
+    a_star_depth = 0
+
     def __init__(self, board_width: int, board_height: int, cars: List['Car'],
                  goal: (int, Position), previous=None):
         """
@@ -142,10 +140,6 @@ class Board:
         self.cars = cars
         self.goal = goal
         self.moves = ""
-        # self.a_star = self.a_star_count()
-        # (index, pos) = goal
-        # self.temp_goal = Goal.from_position(cars[index], pos)
-
 
     def is_winner(self) -> bool:
         """
@@ -177,8 +171,8 @@ class Board:
                     winning_path.reverse()
                     for board in winning_path:
                         print(board)
-                        print(board.moves)
-                    print(len(winning_path))
+                        print("Move made with car:", board.moves)
+                    print("steps made for win:", len(winning_path) - 1)
                     raise Win(board)
 
                 hash0 = hash(board)
@@ -200,9 +194,6 @@ class Board:
                 return self.cars[i]
         return None
 
-    # def a_star_value(self):
-        # while(self.previous )
-
 
     def calculate_tree(self, goal, depth, max_depth):
         depth += 1
@@ -220,18 +211,24 @@ class Board:
                     del tree[index][move]
             if len(tree[index]) == 0:
                 tree = None
-        if tree == {}:
-            return "possible"
         return tree
 
 
-    def a_star_count(self):
-        # tree = self.calculate_tree(self.goal, 0, 1)
-        # # print(json.dumps(tree, indent=4, sort_keys=True))
-        # # return count_tree2(tree) + self.count
-        # if tree == 'possible':
-        #     return self.count
-        return self.blocking_value(self.goal) + self.count
+    def a_star_count(self, admissable=False):
+        value = 0
+        if Board.a_star_depth == 1:
+            value += self.blocking_value(self.goal)
+        elif Board.a_star_depth == 2:
+            tree = self.calculate_tree(self.goal, 0, 2)
+            value += count_tree(tree)
+        else:
+            raise Exception("Depth should be 1 or 2.")
+
+        if admissable:
+            return value + self.count
+        else:
+            return value
+
 
     def a_star_count_easy(self):
         return len(self.blocking_cars(self.goal)) + self.count
@@ -331,7 +328,6 @@ def count_tree(tree: Dict) -> int:
 
 
 def count_tree2(tree: Dict) -> int:
-    # print(tree)
     root = CarNode(None, [4], 0, 0)
     root.children[0].children = []
 
@@ -339,7 +335,6 @@ def count_tree2(tree: Dict) -> int:
         car_children = root.children[0].children
         car_children.append(CarNode(root.children[0], value, key, 1))
 
-    # print(root)
     for i in range(len(CarNode.depth_nodes) - 1, 0, -1):
         car_list = CarNode.depth_nodes[i]
         move_list = []
@@ -356,7 +351,6 @@ def count_tree2(tree: Dict) -> int:
             for move_child in car_parent.children:
                 min_value = min(move_child.value, min_value)
             car_parent.value = min_value
-    # print(root.value)
     return root.value
 
 class CarNode:

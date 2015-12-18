@@ -1,4 +1,4 @@
-from .position import Position
+from position import Position
 from typing import List, Set
 
 class Car:
@@ -133,7 +133,7 @@ class Car:
 
     def real_possible_moves(self, other_cars: List['Car'], goal) -> Set:
         possible_movement = self.possible_movement(other_cars)
-        from rushhour.board import MegaCar
+        from board import MegaCar
         resolve_block_list = self.resolve_block(MegaCar.from_goal(goal, other_cars))
         return set.intersection(set(possible_movement), set(resolve_block_list))
 

@@ -9,9 +9,9 @@ def interactive_search(game_index):
     game = games[game_index - 1]
 
     print("Trying to solve game with breadth first algortihm... ")
-    print("If I can't solve it in 10 seconds, I'll ask for your help.")
+    print("If I can't solve it in a second, I'll ask for your help.")
 
-    breath_search(game, 10)
+    breath_search(game, 1)
     print("We can simplify this problem by \"freezing\" some cars.")
 
     while True:
